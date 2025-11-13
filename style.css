@@ -1,0 +1,30 @@
+/* ... (your existing styles) ... */
+
+hr {
+    margin: 2em 0;
+}
+
+#acceptAllBtn {
+    background-color: #f0ad4e;
+    margin-bottom: 1em;
+}
+
+#acceptAllBtn:hover {
+    background-color: #ec971f;
+}
+
+.feedback-item {
+    background: #f9f9f9;
+    border: 1px solid #ddd;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-radius: 3px;
+}
+
+.feedback-item.accepted {
+    border-left: 5px solid #5cb85c;
+}
+
+.feedback-item p {
+    margin: 0.5em 0;
+}
