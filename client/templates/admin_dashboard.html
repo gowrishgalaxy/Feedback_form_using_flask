@@ -30,6 +30,7 @@
                         <th>Email</th>
                         <th>Movie Title</th>
                         <th>Message</th>
+                        <th>Rating</th>
                         <th>Date</th>
                         <th>Status</th>
                     </tr>
@@ -41,12 +42,13 @@
                         <td>{{ item.email }}</td>
                         <td>{{ item.movie_title }}</td>
                         <td>{{ item.message }}</td>
+                        <td>{{ item.rating ~ '/5' if item.rating else 'N/A' }}</td>
                         <td>{{ item.submission_date.strftime('%Y-%m-%d %H:%M') }}</td>
                         <td>{{ 'Accepted' if item.is_accepted else 'Pending' }}</td>
                     </tr>
                     {% else %}
                     <tr>
-                        <td colspan="6">No feedback yet.</td>
+                        <td colspan="7">No feedback yet.</td>
                     </tr>
                     {% endfor %}
                 </tbody>

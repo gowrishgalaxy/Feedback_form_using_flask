@@ -8,7 +8,7 @@ from functools import wraps
 
 load_dotenv() # loads variables from .env file
 
-app = Flask(__name__, template_folder='./client/templates', static_folder='./client/static/css') # Point to the current directory for templates
+app = Flask(__name__, template_folder='./client/templates', static_folder='./client/static') # Point to the root static folder
 
 # --- (Your existing MySQL configurations) ---
 app.config['MYSQL_HOST'] = os.getenv('MYSQL_HOST', 'localhost')
@@ -70,8 +70,7 @@ def login():
                 else:
                     return redirect(url_for('reviewer_dashboard'))
         flash('Invalid username or password.', 'error') # This line is reached if login fails
-        return redirect(url_for('login')) # Redirect back to login page to show the flash message
-    return render_template('login.html')
+    return render_template('login.html') # Re-render the login page on GET or failed POST
 
 @app.route('/register', methods=['GET', 'POST'])
 def register():
@@ -82,10 +81,8 @@ def register():
         hashed_password = generate_password_hash(password)
         try:
             with mysql.connection.cursor() as cur:
-                # For simplicity, the first user is an admin. In a real app, this would be handled differently.
-                cur.execute("SELECT id FROM users")
-                role = 'admin' if cur.rowcount == 0 else 'user'
-                cur.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, %s)", (username, hashed_password, role))
+                # All new registrations will have the 'user' role.
+                cur.execute("INSERT INTO users (username, password, role) VALUES (%s, %s, %s)", (username, hashed_password, 'user'))
                 mysql.connection.commit()
             return redirect(url_for('login'))
         except mysql.connection.IntegrityError:
@@ -116,7 +113,7 @@ def index():
 def admin_dashboard():
     """Renders the admin dashboard with all feedback."""
     with mysql.connection.cursor() as cur:
-        cur.execute("SELECT id, name, email, message, movie_title, is_accepted, submission_date FROM feedback ORDER BY submission_date DESC")
+        cur.execute("SELECT id, name, email, message, movie_title, rating, is_accepted, submission_date FROM feedback ORDER BY submission_date DESC")
         feedback_data = cur.fetchall()
     return render_template('admin_dashboard.html', feedback=feedback_data, current_user=current_user)
 
@@ -135,9 +132,10 @@ def submit():
         email = request.form['email']
         message = request.form['message']
         movie_title = request.form['movie_title'] # Capture the movie title from the form
+        rating = request.form['rating'] # Capture the rating from the form
 
         with mysql.connection.cursor() as cur:
-            cur.execute("INSERT INTO feedback (name, email, message, movie_title) VALUES (%s, %s, %s, %s)", (name, email, message, movie_title))
+            cur.execute("INSERT INTO feedback (name, email, message, movie_title, rating) VALUES (%s, %s, %s, %s, %s)", (name, email, message, movie_title, rating))
             mysql.connection.commit()
         flash('Your feedback has been submitted successfully!', 'success')
     return redirect(url_for('reviewer_dashboard'))
