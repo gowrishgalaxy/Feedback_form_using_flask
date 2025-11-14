@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
+<head> 
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Feedback Form</title>
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
-<body>
+<body> 
     <div class="container">
         <h1>Feedback Form</h1>
         <form id="feedbackForm" action="/submit" method="post">
@@ -32,16 +32,15 @@
         <button id="acceptAllBtn">Accept All Changes</button>
         <div id="feedbackContainer">
             {% for item in feedback %}
-                <div class="feedback-item {% if item[3] %}accepted{% endif %}">
-                    <p><strong>Name:</strong> {{ item[0] }}</p>
-                    <p><strong>Email:</strong> {{ item[1] }}</p>
-                    <p><strong>Message:</strong> {{ item[2] }}</p>
-                    <p><strong>Status:</strong> {% if item[3] %}Accepted{% else %}Pending{% endif %}</p>
+                <div class="feedback-item {% if item.is_accepted %}accepted{% endif %}">
+                    <p><strong>Name:</strong> {{ item.name }}</p>
+                    <p><strong>Email:</strong> {{ item.email }}</p>
+                    <p><strong>Message:</strong> {{ item.message }}</p>
+                    <p><strong>Status:</strong> {% if item.is_accepted %}Accepted{% else %}Pending{% endif %}</p>
                 </div>
             {% endfor %}
         </div>
     </div>
-    <script src="{{ url_for('static', filename='js/script.js') }}"></script>
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
 </body>
 </html>
-
