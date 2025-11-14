@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <header>
+        <h1>Admin Dashboard</h1>
+        <nav>
+            <span>Welcome, {{ current_user.username }} (Admin)</span>
+            <a href="{{ url_for('logout') }}">Logout</a>
+        </nav>
+    </header>
+
+    <main>
+        <section class="feedback-display">
+            <h2>All Movie Feedback</h2>
+            {% if current_user.role == 'admin' %}
+            <div class="admin-actions">
+                <button id="accept-all-btn">Accept All Unapproved</button>
+            </div>
+            {% endif %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>Email</th>
+                        <th>Movie Title</th>
+                        <th>Message</th>
+                        <th>Date</th>
+                        <th>Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for item in feedback %}
+                    <tr>
+                        <td>{{ item.name }}</td>
+                        <td>{{ item.email }}</td>
+                        <td>{{ item.movie_title }}</td>
+                        <td>{{ item.message }}</td>
+                        <td>{{ item.submission_date.strftime('%Y-%m-%d %H:%M') }}</td>
+                        <td>{{ 'Accepted' if item.is_accepted else 'Pending' }}</td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="6">No feedback yet.</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </section>
+    </main>
+
+    <script>
+        document.getElementById('accept-all-btn').addEventListener('click', () => {
+            if (!confirm('Are you sure you want to accept all pending feedback?')) {
+                return;
+            }
+            fetch('/accept-all', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                }
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message || data.error);
+                window.location.reload();
+            })
+            .catch(error => console.error('Error:', error));
+        });
+    </script>
+</body>
+</html>
