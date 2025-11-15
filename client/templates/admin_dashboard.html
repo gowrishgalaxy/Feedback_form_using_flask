@@ -15,15 +15,17 @@
         </nav>
     </header>
 
-    <main>
+    <main class="container dashboard-container">
+        <h2>All Movie Feedback</h2>
+        {% if current_user.role == 'admin' %}
+        <div class="admin-actions">
+            <button id="accept-all-btn">Accept All Unapproved</button>
+        </div>
+        {% endif %}
+
+        <!-- Wrapper for horizontal scrolling on small screens -->
         <section class="feedback-display">
-            <h2>All Movie Feedback</h2>
-            {% if current_user.role == 'admin' %}
-            <div class="admin-actions">
-                <button id="accept-all-btn">Accept All Unapproved</button>
-            </div>
-            {% endif %}
-            <table>
+            <table class="feedback-table">
                 <thead>
                     <tr>
                         <th>Name</th>
@@ -44,7 +46,9 @@
                         <td>{{ item.message }}</td>
                         <td>{{ item.rating ~ '/5' if item.rating else 'N/A' }}</td>
                         <td>{{ item.submission_date.strftime('%Y-%m-%d %H:%M') }}</td>
-                        <td>{{ 'Accepted' if item.is_accepted else 'Pending' }}</td>
+                        <td>
+                            <span class="status-badge {{ 'status-accepted' if item.is_accepted else 'status-pending' }}">{{ 'Accepted' if item.is_accepted else 'Pending' }}</span>
+                        </td>
                     </tr>
                     {% else %}
                     <tr>

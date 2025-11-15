@@ -27,7 +27,13 @@ CREATE TABLE feedback (
     rating INT,
     submission_date TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     is_accepted BOOLEAN NOT NULL DEFAULT FALSE
-);
+);-- Updates a user's role to 'admin' based on their username.
+-- Replace 'username_to_update' with the actual username of the user you want to make an admin.
+UPDATE users SET role = 'admin' WHERE username = 'username_to_update';
+-- Deletes a user with a specific username.
+-- Replace 'username_to_delete' with the actual username of the user you want to remove.
+DELETE FROM users WHERE username = 'username_to_delete';
+
 
 -- This creates the 'users' table for authentication and roles.
 CREATE TABLE users (

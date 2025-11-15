@@ -51,7 +51,14 @@ header nav span {
 
 /* A wider container for dashboards */
 .dashboard-container {
-    max-width: 960px;
+    max-width: 1200px; /* Widen container for more space */
+    background-color: #fff;
+    padding: 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+}
+.feedback-display {
+    overflow-x: auto; /* Enable horizontal scrolling on small screens */
 }
 
 h2 {
@@ -109,23 +116,79 @@ h2 {
 }
 
 /* Button Styles */
-.btn {
+.btn, #accept-all-btn {
     display: block;
     width: 100%;
     padding: 10px 15px;
-    border: none;
-    background-color: #6c757d;
-    color: white;
+    border: 1px solid #ccc;
+    background-color: #f8f9fa;
+    color: #333;
     border-radius: 5px;
     cursor: pointer;
     font-size: 16px;
     text-align: center;
     text-decoration: none;
+    transition: background-color 0.3s, border-color 0.3s;
 }
 
-.btn:hover {
-    background-color: #5a6268;
+.btn:hover, #accept-all-btn:hover {
+    background-color: #e9ecef;
+    border-color: #bbb;
 }
+
+/* Admin Actions Section */
+.admin-actions {
+    margin-bottom: 20px;
+    text-align: right; /* Align button to the right */
+}
+
+#accept-all-btn {
+    display: inline-block; /* Override .btn's block display */
+    width: auto; /* Override .btn's full width */
+    padding: 10px 20px;
+    font-size: 1em;
+}
+
+/* Styles for the feedback table to improve aesthetics */
+.feedback-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+    font-size: 0.95em;
+}
+
+.feedback-table th, .feedback-table td {
+    padding: 12px 15px;
+    border: 1px solid #e1e1e1;
+    text-align: left;
+    vertical-align: middle;
+}
+
+.feedback-table th {
+    background-color: #f2f2f2;
+    font-weight: 600; /* Bolder headers */
+    color: #333;
+    text-transform: uppercase;
+    font-size: 0.85em;
+    letter-spacing: 0.5px;
+}
+.feedback-table tbody tr:nth-child(even) { background-color: #f9f9f9; }
+.feedback-table tbody tr:hover {
+    background-color: #f1f1f1;
+}
+
+.status-badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 0.8em;
+    text-transform: uppercase;
+}
+.status-accepted, .status-pending {
+    background-color: #e9ecef;
+    color: #333;
+} 
 
 /* Flash Message Styles */
 .flash {
@@ -136,15 +199,15 @@ h2 {
 }
 
 .flash.error {
-    background-color: #f8f9fa; /* Keep light background */
-    color: #333; /* Change text color from red to neutral dark gray */
-    border: 1px solid #ddd; /* Change border color from red to neutral gray */
+    background-color: #f8f9fa;
+    color: #333;
+    border: 1px solid #ddd;
 }
 
 .flash.success {
     background-color: #f8f9fa;
-    color: #155724;
-    border: 1px solid #c3e6cb;
+    color: #333;
+    border: 1px solid #ddd;
 }
 
 /* Auth Page Link Style */
